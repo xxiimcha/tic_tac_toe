@@ -1,19 +1,17 @@
-import random
 from src.game_board import GameBoard
 
 class TicTacToe:
-    def __init__(self):
-        self.board = GameBoard()
+    def __init__(self, size=3, win_length=None):
+        self.board = GameBoard(size, win_length)
         self.players = ["X", "O"]
-        self.current_player = random.choice(self.players)  # Randomize first player
+        self.current_player = self.players[0]
 
     def switch_player(self):
         self.current_player = "O" if self.current_player == "X" else "X"
 
     def play(self):
         print("Welcome to Tic-Tac-Toe!")
-        print(f"Player {self.current_player} starts the game!")
-
+        print(f"Board Size: {self.board.size}x{self.board.size}, Winning Sequence: {self.board.win_length}")
         while True:
             self.board.print_board()
             player = self.current_player
@@ -21,14 +19,14 @@ class TicTacToe:
             # Get user move with validation
             while True:
                 try:
-                    row, col = map(int, input(f"Player {player}, enter row and col (0-2, space-separated): ").split())
-                    if 0 <= row < 3 and 0 <= col < 3:
+                    row, col = map(int, input(f"Player {player}, enter row and col (0-{self.board.size - 1}, space-separated): ").split())
+                    if 0 <= row < self.board.size and 0 <= col < self.board.size:
                         if self.board.make_move(row, col, player):
                             break
                         else:
                             print("That spot is already taken! Try again.")
                     else:
-                        print("Invalid input! Row and column must be between 0 and 2.")
+                        print(f"Invalid input! Row and column must be between 0 and {self.board.size - 1}.")
                 except ValueError:
                     print("Invalid format! Enter row and col separated by a space (e.g., '1 2').")
 
@@ -55,7 +53,7 @@ class TicTacToe:
         choice = input("Do you want to play again? (yes/no): ").strip().lower()
         if choice in ["yes", "y"]:
             self.board.reset_board()
-            self.current_player = random.choice(self.players)  # New random first player
+            self.current_player = self.players[0]
             print("\nStarting a new game!\n")
             return True
         return False
