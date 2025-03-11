@@ -1,13 +1,17 @@
+import random
+
 class GameBoard:
     def __init__(self):
         self.empty = " "
-        self.board = [[self.empty for _ in range(3)] for _ in range(3)]
+        self.board = [[self.empty for _ in range(3)] for _ in range(3)]  # 2D list for a 3x3 board
 
     def print_board(self):
-        for row in self.board:
+        print("\nCurrent Board:")
+        for i, row in enumerate(self.board):
             print(" | ".join(row))
-            print("-" * 9)
-    
+            if i < 2:
+                print("-" * 9)
+
     def is_full(self):
         return all(cell != self.empty for row in self.board for cell in row)
 
@@ -29,3 +33,7 @@ class GameBoard:
             self.board[row][col] = player
             return True
         return False
+
+    def reset_board(self):
+        """Resets the board for a new game."""
+        self.board = [[self.empty for _ in range(3)] for _ in range(3)]
